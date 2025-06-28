@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,25 +7,109 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="favicon.ico">
   <link rel="stylesheet" href="out.css">
-  <title>Tailwind CSS</title>
+  <title>Scents Gallery - Curated Fine Fragrances</title>
 </head>
-<body class="bg-slate-900 flex justify-center">
-  <div class="max-w-5xl pt-20 lg:pt-32 mx-2">
-    <h1 class="text-slate-900 font-extrabold text-4xl sm:text-5xl lg:text-6xl pb-3 text-sky-500 tracking-tight text-center">Rapidly build modern websites without ever leaving your HTML.</h1>
-    <p class="mt-6 text-lg text-slate-600 text-center max-w-3xl mx-auto dark:text-slate-400">
-      A utility-first CSS framework packed with classes like 
-      <code class="font-mono font-medium text-sky-500 dark:text-sky-400">flex</code>, 
-      <code class="font-mono font-medium text-sky-500 dark:text-sky-400">pt-4</code>, 
-      <code class="font-mono font-medium text-sky-500 dark:text-sky-400">text-center</code> and 
-      <code class="font-mono font-medium text-sky-500 dark:text-sky-400">rotate-90</code> that can be composed to build any design, directly in your markup. Now in replit!
-    </p>
-    <div class="w-full flex justify-center">
-        <a href="https://tailwindcss.com/docs/utility-first" class="bg-slate-900 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 text-white font-semibold h-12 px-6 rounded-lg items-center justify-center sm:w-auto dark:bg-sky-500 dark:highlight-white/20 dark:hover:bg-sky-400 m-5 flex" target="_blank">
-        Visit the documentation
-      </a>
+<body class="bg-slate-50 min-h-screen">
+  <!-- Header -->
+  <header class="bg-white shadow-sm border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 py-6">
+      <div class="flex items-center justify-between">
+        <h1 class="text-3xl font-bold text-slate-900">🌿 Scents Gallery</h1>
+        <nav class="flex space-x-8">
+          <a href="#fragrances" class="text-slate-600 hover:text-slate-900 font-medium">Fragrances</a>
+          <a href="#about" class="text-slate-600 hover:text-slate-900 font-medium">About</a>
+          <button class="bg-slate-900 text-white px-6 py-2 rounded-lg hover:bg-slate-700 transition-colors">
+            Cart (0)
+          </button>
+        </nav>
+      </div>
     </div>
-    
+  </header>
+
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-b from-slate-100 to-white py-20">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+      <h2 class="text-5xl font-bold text-slate-900 mb-6">Curated Fine Fragrances</h2>
+      <p class="text-xl text-slate-600 mb-8 max-w-3xl mx-auto">
+        Discover extraordinary scents that tell stories. From aquatic minimalism to smoky sophistication, 
+        each fragrance is carefully selected for its artistry and character.
+      </p>
+      <button onclick="scrollToFragrances()" class="bg-slate-900 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-slate-700 transition-colors">
+        Explore Collection
+      </button>
+    </div>
+  </section>
+
+  <!-- Filters -->
+  <section class="max-w-7xl mx-auto px-4 py-8">
+    <div class="flex flex-wrap gap-4 items-center justify-center">
+      <label class="text-sm font-medium text-slate-700">Filter by:</label>
+      <select id="ratingFilter" class="px-4 py-2 border border-slate-300 rounded-lg">
+        <option value="">All Ratings</option>
+        <option value="5">⭐⭐⭐⭐⭐ (5 stars)</option>
+        <option value="4">⭐⭐⭐⭐ (4+ stars)</option>
+        <option value="3">⭐⭐⭐ (3+ stars)</option>
+      </select>
+      <select id="temperatureFilter" class="px-4 py-2 border border-slate-300 rounded-lg">
+        <option value="">All Temperatures</option>
+        <option value="Cool">Cool</option>
+        <option value="Warm">Warm</option>
+        <option value="Cold">Cold</option>
+        <option value="Neutral">Neutral</option>
+      </select>
+      <input type="text" id="searchInput" placeholder="Search fragrances..." class="px-4 py-2 border border-slate-300 rounded-lg w-64">
+    </div>
+  </section>
+
+  <!-- Fragrances Grid -->
+  <section id="fragrances" class="max-w-7xl mx-auto px-4 py-8">
+    <div id="fragranceGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Fragrances will be loaded here by JavaScript -->
+    </div>
+  </section>
+
+  <!-- Modal -->
+  <div id="fragranceModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+    <div class="flex items-center justify-center min-h-screen p-4">
+      <div class="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div id="modalContent" class="p-8">
+          <!-- Modal content will be inserted here -->
+        </div>
+      </div>
+    </div>
   </div>
-  
+
+  <!-- Footer -->
+  <footer class="bg-slate-900 text-white py-12 mt-16">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div>
+          <h3 class="text-xl font-bold mb-4">🌿 Scents Gallery</h3>
+          <p class="text-slate-300">Curating extraordinary fragrances for the discerning nose.</p>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-4">Customer Care</h4>
+          <ul class="space-y-2 text-slate-300">
+            <li><a href="#" class="hover:text-white">Shipping Info</a></li>
+            <li><a href="#" class="hover:text-white">Returns</a></li>
+            <li><a href="#" class="hover:text-white">Contact Us</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-4">About</h4>
+          <ul class="space-y-2 text-slate-300">
+            <li><a href="#" class="hover:text-white">Our Story</a></li>
+            <li><a href="#" class="hover:text-white">Fragrance Guide</a></li>
+            <li><a href="#" class="hover:text-white">Reviews</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-slate-700 mt-8 pt-8 text-center text-slate-400">
+        <p>&copy; 2024 Scents Gallery. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>

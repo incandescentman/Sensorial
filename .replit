@@ -40,3 +40,19 @@ start = "typescript-language-server --stdio"
 [[ports]]
 localPort = 3000
 externalPort = 80
+
+[workflows]
+runButton = "Development"
+
+[[workflows.workflow]]
+name = "Development"
+author = 22705713
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npx tailwindcss -i ./input.css -o ./public/out.css --watch &"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node index.js"
