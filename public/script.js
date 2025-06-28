@@ -1,4 +1,3 @@
-
 // CSV data will be loaded and parsed here
 let fragrancesData = [];
 let filteredData = [];
@@ -8,13 +7,13 @@ function parseCSV(csvText) {
   // Split by lines but we'll rebuild rows that span multiple lines
   const allLines = csvText.split('\n');
   if (allLines.length === 0) return [];
-  
+
   // Parse headers from first line
   const headers = parseCSVRow(allLines[0]);
-  
+
   const data = [];
   let i = 1; // Start from second line
-  
+
   while (i < allLines.length) {
     const { row, nextIndex } = parseCSVRow(allLines, i);
     if (row.length > 0 && row.some(cell => cell.trim())) {
@@ -26,7 +25,7 @@ function parseCSV(csvText) {
     }
     i = nextIndex;
   }
-  
+
   return data;
 }
 
@@ -36,20 +35,20 @@ function parseCSVRow(lines, startIndex = 0) {
     // Single line case
     return parseSimpleCSVLine(lines);
   }
-  
+
   // Multi-line case
   const values = [];
   let current = '';
   let inQuotes = false;
   let lineIndex = startIndex;
-  
+
   while (lineIndex < lines.length) {
     const line = lines[lineIndex];
     let charIndex = 0;
-    
+
     while (charIndex < line.length) {
       const char = line[charIndex];
-      
+
       if (char === '"') {
         if (!inQuotes) {
           inQuotes = true;
@@ -69,7 +68,7 @@ function parseCSVRow(lines, startIndex = 0) {
       }
       charIndex++;
     }
-    
+
     // If we're in quotes, add a newline and continue to next line
     if (inQuotes && lineIndex + 1 < lines.length) {
       current += '\n';
@@ -80,7 +79,7 @@ function parseCSVRow(lines, startIndex = 0) {
       break;
     }
   }
-  
+
   return { row: values, nextIndex: lineIndex + 1 };
 }
 
@@ -89,10 +88,10 @@ function parseSimpleCSVLine(line) {
   const values = [];
   let current = '';
   let inQuotes = false;
-  
+
   for (let i = 0; i < line.length; i++) {
     const char = line[i];
-    
+
     if (char === '"') {
       if (!inQuotes) {
         inQuotes = true;
@@ -109,7 +108,7 @@ function parseSimpleCSVLine(line) {
       current += char;
     }
   }
-  
+
   values.push(current.trim());
   return values;
 }
@@ -147,7 +146,7 @@ function generateStars(rating) {
 // Make notes clickable
 function makeNotesClickable(notesText) {
   if (!notesText) return '';
-  
+
   return notesText.split(',').map(note => {
     const trimmedNote = note.trim();
     return `<span class="cursor-pointer hover:bg-slate-100 px-1 py-0.5 rounded transition-colors" onclick="showRelatedProducts('${trimmedNote.replace(/'/g, "\\'")}', '${notesText.includes(trimmedNote) ? 'note' : 'accord'}')">${trimmedNote}</span>`;
@@ -173,8 +172,21 @@ function renderFragrances() {
     const rating = generateStars(fragrance.Rating);
     const price = Math.floor(Math.random() * 200) + 50; // Random price for demo
 
+    const imageName = fragrance.Name.toLowerCase()
+      .replace(/[^\w\s]/g, '') // Remove emojis and special chars
+      .replace(/\s+/g, '-') // Replace spaces with hyphens
+      .trim();
+
     card.innerHTML = `
       <div class="p-6">
+        <div class="w-full h-48 mb-4 rounded-xl overflow-hidden bg-gray-100">
+          <img 
+            src="/images/${imageName}.jpg" 
+            alt="${fragrance.Name}"
+            class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+            onerror="this.src='/images/placeholder.jpg'; this.onerror=null;"
+          />
+        </div>
         <h3 class="text-xl font-bold text-gray-900 mb-2">${fragrance.Name}</h3>
         <p class="text-sm text-gray-600 mb-2">${fragrance.Brand}</p>
         <div class="flex items-center justify-between mb-3">
@@ -201,7 +213,7 @@ function renderFragrances() {
 function openModal(fragrance) {
   const modal = document.getElementById('fragranceModal');
   const content = document.getElementById('modalContent');
-  
+
   const rating = generateStars(fragrance.Rating);
   const price = Math.floor(Math.random() * 200) + 50;
 
@@ -304,7 +316,7 @@ function showRelatedProducts(searchTerm, type) {
 function openRelatedProductsModal(searchTerm, relatedFragrances, type) {
   const modal = document.getElementById('relatedProductsModal');
   const content = document.getElementById('relatedModalContent');
-  
+
   content.innerHTML = `
     <div class="flex justify-between items-start mb-6">
       <div>
@@ -368,18 +380,18 @@ function scrollToFragrances() {
 // Event listeners
 document.addEventListener('DOMContentLoaded', () => {
   loadFragrances();
-  
+
   document.getElementById('ratingFilter').addEventListener('change', applyFilters);
   document.getElementById('temperatureFilter').addEventListener('change', applyFilters);
   document.getElementById('searchInput').addEventListener('input', applyFilters);
-  
+
   // Close modal when clicking outside
   document.getElementById('fragranceModal').addEventListener('click', (e) => {
     if (e.target.id === 'fragranceModal') {
       closeModal();
     }
   });
-  
+
   // Close related products modal when clicking outside
   document.getElementById('relatedProductsModal').addEventListener('click', (e) => {
     if (e.target.id === 'relatedProductsModal') {
