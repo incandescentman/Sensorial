@@ -210,39 +210,47 @@ function openModal(fragrance) {
 
     <div class="space-y-6">
       <div>
-        <h3 class="text-lg font-semibold text-slate-900 mb-2">Fragrance Profile</h3>
+        <h3 class="text-lg font-semibold text-slate-900 mb-2">Vibe:</h3>
         <p class="text-slate-700">${fragrance.Vibe}</p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
-          <h4 class="font-semibold text-slate-900 mb-2">Top Notes</h4>
+          <h4 class="font-semibold text-slate-900 mb-2">Top Notes:</h4>
           <p class="text-sm text-slate-600">${fragrance['Top Notes']}</p>
         </div>
         <div>
-          <h4 class="font-semibold text-slate-900 mb-2">Heart Notes</h4>
+          <h4 class="font-semibold text-slate-900 mb-2">Heart Notes:</h4>
           <p class="text-sm text-slate-600">${fragrance['Heart Notes']}</p>
         </div>
         <div>
-          <h4 class="font-semibold text-slate-900 mb-2">Base Notes</h4>
+          <h4 class="font-semibold text-slate-900 mb-2">Base Notes:</h4>
           <p class="text-sm text-slate-600">${fragrance['Base Notes']}</p>
         </div>
       </div>
 
       <div>
-        <h4 class="font-semibold text-slate-900 mb-2">What It Smells Like</h4>
+        <h4 class="font-semibold text-slate-900 mb-2">Main Accords:</h4>
+        <div class="flex flex-wrap gap-2">
+          ${fragrance['Main Accords'].split(',').map(accord => 
+            `<span class="px-3 py-1 bg-slate-100 text-slate-600 text-sm rounded-full">${accord.trim()}</span>`
+          ).join('')}
+        </div>
+      </div>
+
+      <div>
+        <h4 class="font-semibold text-slate-900 mb-2">Color Association:</h4>
+        <p class="text-slate-700">${fragrance['Color Association']}</p>
+      </div>
+
+      <div>
+        <h4 class="font-semibold text-slate-900 mb-2">What It Smells Like:</h4>
         <p class="text-slate-700">${fragrance['Smells Like...']}</p>
       </div>
 
       <div>
-        <h4 class="font-semibold text-slate-900 mb-2">Memory & Association</h4>
+        <h4 class="font-semibold text-slate-900 mb-2">Memory & Association:</h4>
         <p class="text-slate-700">${fragrance['Memory or Association']}</p>
-      </div>
-
-      <div class="flex flex-wrap gap-2">
-        ${fragrance['Main Accords'].split(',').map(accord => 
-          `<span class="px-3 py-1 bg-slate-100 text-slate-600 text-sm rounded-full">${accord.trim()}</span>`
-        ).join('')}
       </div>
 
       <div class="flex gap-4 pt-6 border-t border-slate-200">
