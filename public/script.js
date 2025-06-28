@@ -160,15 +160,12 @@ function renderFragrances() {
     card.className = 'bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer';
     card.onclick = () => openModal(fragrance);
 
-    const emoji = extractEmoji(fragrance.Name);
-    const cleanedName = cleanName(fragrance.Name);
     const rating = generateStars(fragrance.Rating);
     const price = Math.floor(Math.random() * 200) + 50; // Random price for demo
 
     card.innerHTML = `
       <div class="p-6">
-        <div class="text-4xl mb-4 text-center">${emoji}</div>
-        <h3 class="text-xl font-bold text-slate-900 mb-2">${cleanedName}</h3>
+        <h3 class="text-xl font-bold text-slate-900 mb-2">${fragrance.Name}</h3>
         <p class="text-sm text-slate-600 mb-2">${fragrance.Brand}</p>
         <div class="flex items-center justify-between mb-3">
           <span class="text-sm">${rating}</span>
@@ -195,16 +192,13 @@ function openModal(fragrance) {
   const modal = document.getElementById('fragranceModal');
   const content = document.getElementById('modalContent');
   
-  const emoji = extractEmoji(fragrance.Name);
-  const cleanedName = cleanName(fragrance.Name);
   const rating = generateStars(fragrance.Rating);
   const price = Math.floor(Math.random() * 200) + 50;
 
   content.innerHTML = `
     <div class="flex justify-between items-start mb-6">
       <div>
-        <div class="text-5xl mb-4">${emoji}</div>
-        <h2 class="text-3xl font-bold text-slate-900 mb-2">${cleanedName}</h2>
+        <h2 class="text-3xl font-bold text-slate-900 mb-2">${fragrance.Name}</h2>
         <p class="text-lg text-slate-600 mb-2">${fragrance.Brand}</p>
         <div class="flex items-center gap-4 mb-4">
           <span>${rating}</span>
