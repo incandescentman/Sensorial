@@ -3,66 +3,114 @@
 let fragrancesData = [];
 let filteredData = [];
 
-// Parse CSV data with proper quote handling
+// Parse CSV data with proper quote and multi-line handling
 function parseCSV(csvText) {
-  const lines = csvText.split('\n');
-  if (lines.length === 0) return [];
+  // Split by lines but we'll rebuild rows that span multiple lines
+  const allLines = csvText.split('\n');
+  if (allLines.length === 0) return [];
   
-  // Parse headers
-  const headers = parseCSVLine(lines[0]).map(h => h.trim().replace(/^"/, '').replace(/"$/, ''));
+  // Parse headers from first line
+  const headers = parseCSVRow(allLines[0]);
   
   const data = [];
-  for (let i = 1; i < lines.length; i++) {
-    const line = lines[i].trim();
-    if (line) {
-      const values = parseCSVLine(line);
+  let i = 1; // Start from second line
+  
+  while (i < allLines.length) {
+    const { row, nextIndex } = parseCSVRow(allLines, i);
+    if (row.length > 0 && row.some(cell => cell.trim())) {
       const item = {};
       headers.forEach((header, index) => {
-        // Clean up the values by removing surrounding quotes and trimming
-        let value = values[index] || '';
-        value = value.trim().replace(/^"/, '').replace(/"$/, '');
-        item[header] = value;
+        item[header] = row[index] || '';
       });
       data.push(item);
     }
+    i = nextIndex;
   }
+  
   return data;
 }
 
-// Enhanced CSV line parser that properly handles quoted fields
-function parseCSVLine(line) {
+// Parse a single CSV row, handling multi-line quoted fields
+function parseCSVRow(lines, startIndex = 0) {
+  if (typeof lines === 'string') {
+    // Single line case
+    return parseSimpleCSVLine(lines);
+  }
+  
+  // Multi-line case
   const values = [];
   let current = '';
   let inQuotes = false;
-  let i = 0;
+  let lineIndex = startIndex;
   
-  while (i < line.length) {
+  while (lineIndex < lines.length) {
+    const line = lines[lineIndex];
+    let charIndex = 0;
+    
+    while (charIndex < line.length) {
+      const char = line[charIndex];
+      
+      if (char === '"') {
+        if (!inQuotes) {
+          inQuotes = true;
+        } else if (charIndex + 1 < line.length && line[charIndex + 1] === '"') {
+          // Escaped quote
+          current += '"';
+          charIndex++; // Skip next quote
+        } else {
+          inQuotes = false;
+        }
+      } else if (char === ',' && !inQuotes) {
+        // Field separator
+        values.push(current.trim());
+        current = '';
+      } else {
+        current += char;
+      }
+      charIndex++;
+    }
+    
+    // If we're in quotes, add a newline and continue to next line
+    if (inQuotes && lineIndex + 1 < lines.length) {
+      current += '\n';
+      lineIndex++;
+    } else {
+      // End of this row
+      values.push(current.trim());
+      break;
+    }
+  }
+  
+  return { row: values, nextIndex: lineIndex + 1 };
+}
+
+// Simple CSV line parser for single lines
+function parseSimpleCSVLine(line) {
+  const values = [];
+  let current = '';
+  let inQuotes = false;
+  
+  for (let i = 0; i < line.length; i++) {
     const char = line[i];
     
     if (char === '"') {
       if (!inQuotes) {
-        // Start of quoted field
         inQuotes = true;
       } else if (i + 1 < line.length && line[i + 1] === '"') {
-        // Escaped quote (double quote)
         current += '"';
-        i++; // Skip the next quote
+        i++; // Skip next quote
       } else {
-        // End of quoted field
         inQuotes = false;
       }
     } else if (char === ',' && !inQuotes) {
-      // Field separator
-      values.push(current);
+      values.push(current.trim());
       current = '';
     } else {
       current += char;
     }
-    i++;
   }
   
-  // Add the last field
-  values.push(current);
+  values.push(current.trim());
   return values;
 }
 
