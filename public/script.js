@@ -3,18 +3,25 @@
 let fragrancesData = [];
 let filteredData = [];
 
-// Parse CSV data
+// Parse CSV data with proper quote handling
 function parseCSV(csvText) {
   const lines = csvText.split('\n');
-  const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
+  if (lines.length === 0) return [];
+  
+  // Parse headers
+  const headers = parseCSVLine(lines[0]).map(h => h.trim().replace(/^"/, '').replace(/"$/, ''));
   
   const data = [];
   for (let i = 1; i < lines.length; i++) {
-    if (lines[i].trim()) {
-      const values = parseCSVLine(lines[i]);
+    const line = lines[i].trim();
+    if (line) {
+      const values = parseCSVLine(line);
       const item = {};
       headers.forEach((header, index) => {
-        item[header] = values[index] || '';
+        // Clean up the values by removing surrounding quotes and trimming
+        let value = values[index] || '';
+        value = value.trim().replace(/^"/, '').replace(/"$/, '');
+        item[header] = value;
       });
       data.push(item);
     }
@@ -22,31 +29,40 @@ function parseCSV(csvText) {
   return data;
 }
 
-// Helper function to parse CSV line with proper quote handling
+// Enhanced CSV line parser that properly handles quoted fields
 function parseCSVLine(line) {
   const values = [];
   let current = '';
   let inQuotes = false;
+  let i = 0;
   
-  for (let i = 0; i < line.length; i++) {
+  while (i < line.length) {
     const char = line[i];
-    const nextChar = line[i + 1];
     
-    if (char === '"' && !inQuotes) {
-      inQuotes = true;
-    } else if (char === '"' && inQuotes && nextChar === '"') {
-      current += '"';
-      i++; // Skip next quote
-    } else if (char === '"' && inQuotes) {
-      inQuotes = false;
+    if (char === '"') {
+      if (!inQuotes) {
+        // Start of quoted field
+        inQuotes = true;
+      } else if (i + 1 < line.length && line[i + 1] === '"') {
+        // Escaped quote (double quote)
+        current += '"';
+        i++; // Skip the next quote
+      } else {
+        // End of quoted field
+        inQuotes = false;
+      }
     } else if (char === ',' && !inQuotes) {
-      values.push(current.trim());
+      // Field separator
+      values.push(current);
       current = '';
     } else {
       current += char;
     }
+    i++;
   }
-  values.push(current.trim());
+  
+  // Add the last field
+  values.push(current);
   return values;
 }
 
