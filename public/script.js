@@ -144,6 +144,16 @@ function generateStars(rating) {
   return '⭐'.repeat(stars) + '☆'.repeat(5 - stars);
 }
 
+// Make notes clickable
+function makeNotesClickable(notesText) {
+  if (!notesText) return '';
+  
+  return notesText.split(',').map(note => {
+    const trimmedNote = note.trim();
+    return `<span class="cursor-pointer hover:bg-slate-100 px-1 py-0.5 rounded transition-colors" onclick="showRelatedProducts('${trimmedNote.replace(/'/g, "\\'")}', '${notesText.includes(trimmedNote) ? 'note' : 'accord'}')">${trimmedNote}</span>`;
+  }).join(', ');
+}
+
 // Truncate text
 function truncateText(text, maxLength = 150) {
   if (text.length <= maxLength) return text;
@@ -217,15 +227,15 @@ function openModal(fragrance) {
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
           <h4 class="font-semibold text-slate-900 mb-2">Top Notes:</h4>
-          <p class="text-sm text-slate-600">${fragrance['Top Notes']}</p>
+          <div class="text-sm text-slate-600">${makeNotesClickable(fragrance['Top Notes'])}</div>
         </div>
         <div>
           <h4 class="font-semibold text-slate-900 mb-2">Heart Notes:</h4>
-          <p class="text-sm text-slate-600">${fragrance['Heart Notes']}</p>
+          <div class="text-sm text-slate-600">${makeNotesClickable(fragrance['Heart Notes'])}</div>
         </div>
         <div>
           <h4 class="font-semibold text-slate-900 mb-2">Base Notes:</h4>
-          <p class="text-sm text-slate-600">${fragrance['Base Notes']}</p>
+          <div class="text-sm text-slate-600">${makeNotesClickable(fragrance['Base Notes'])}</div>
         </div>
       </div>
 
@@ -275,6 +285,60 @@ function closeModal() {
   document.body.style.overflow = 'auto';
 }
 
+// Show related products
+function showRelatedProducts(searchTerm, type) {
+  const relatedFragrances = fragrancesData.filter(fragrance => {
+    const searchTermLower = searchTerm.toLowerCase();
+    return (
+      fragrance['Top Notes'].toLowerCase().includes(searchTermLower) ||
+      fragrance['Heart Notes'].toLowerCase().includes(searchTermLower) ||
+      fragrance['Base Notes'].toLowerCase().includes(searchTermLower) ||
+      fragrance['Main Accords'].toLowerCase().includes(searchTermLower)
+    );
+  });
+
+  openRelatedProductsModal(searchTerm, relatedFragrances, type);
+}
+
+// Open related products modal
+function openRelatedProductsModal(searchTerm, relatedFragrances, type) {
+  const modal = document.getElementById('relatedProductsModal');
+  const content = document.getElementById('relatedModalContent');
+  
+  content.innerHTML = `
+    <div class="flex justify-between items-start mb-6">
+      <div>
+        <h2 class="text-2xl font-bold text-slate-900 mb-2">Fragrances with "${searchTerm}"</h2>
+        <p class="text-slate-600">${relatedFragrances.length} fragrance${relatedFragrances.length !== 1 ? 's' : ''} found</p>
+      </div>
+      <button onclick="closeRelatedModal()" class="text-slate-400 hover:text-slate-600 text-2xl">&times;</button>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-96 overflow-y-auto">
+      ${relatedFragrances.map(fragrance => `
+        <div class="bg-slate-50 rounded-lg p-4 cursor-pointer hover:bg-slate-100 transition-colors" onclick="closeRelatedModal(); openModal(${JSON.stringify(fragrance).replace(/"/g, '&quot;')})">
+          <h3 class="font-semibold text-slate-900 mb-1">${fragrance.Name}</h3>
+          <p class="text-sm text-slate-600 mb-2">${fragrance.Brand}</p>
+          <div class="flex items-center gap-2 mb-2">
+            <span class="text-xs">${generateStars(fragrance.Rating)}</span>
+          </div>
+          <p class="text-xs text-slate-500 line-clamp-2">${truncateText(fragrance.Vibe, 100)}</p>
+        </div>
+      `).join('')}
+    </div>
+  `;
+
+  modal.classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+// Close related products modal
+function closeRelatedModal() {
+  const modal = document.getElementById('relatedProductsModal');
+  modal.classList.add('hidden');
+  document.body.style.overflow = 'auto';
+}
+
 // Filter functions
 function applyFilters() {
   const ratingFilter = document.getElementById('ratingFilter').value;
@@ -313,6 +377,13 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('fragranceModal').addEventListener('click', (e) => {
     if (e.target.id === 'fragranceModal') {
       closeModal();
+    }
+  });
+  
+  // Close related products modal when clicking outside
+  document.getElementById('relatedProductsModal').addEventListener('click', (e) => {
+    if (e.target.id === 'relatedProductsModal') {
+      closeRelatedModal();
     }
   });
 });
