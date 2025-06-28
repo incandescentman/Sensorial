@@ -9,16 +9,16 @@
   <link rel="stylesheet" href="out.css">
   <title>Scents Gallery - Curated Fine Fragrances</title>
 </head>
-<body class="bg-slate-50 min-h-screen">
+<body class="lovable-gradient-bg min-h-screen">
   <!-- Header -->
-  <header class="bg-white shadow-sm border-b border-slate-200">
-    <div class="max-w-7xl mx-auto px-4 py-6">
-      <div class="flex items-center justify-between">
-        <h1 class="text-3xl font-bold text-slate-900">🌿 Scents Gallery</h1>
-        <nav class="flex space-x-8">
-          <a href="#fragrances" class="text-slate-600 hover:text-slate-900 font-medium">Fragrances</a>
-          <a href="#about" class="text-slate-600 hover:text-slate-900 font-medium">About</a>
-          <button class="bg-slate-900 text-white px-6 py-2 rounded-lg hover:bg-slate-700 transition-colors">
+  <header class="backdrop-glass border-b border-white/20 sticky top-0 z-40">
+    <div class="lovable-container">
+      <div class="flex items-center justify-between py-6">
+        <h1 class="text-3xl font-bold lovable-text-gradient">🌿 Scents Gallery</h1>
+        <nav class="flex items-center space-x-8">
+          <a href="#fragrances" class="text-gray-600 hover:text-gray-900 font-medium transition-colors">Fragrances</a>
+          <a href="#about" class="text-gray-600 hover:text-gray-900 font-medium transition-colors">About</a>
+          <button class="lovable-button-secondary">
             Cart (0)
           </button>
         </nav>
@@ -27,51 +27,57 @@
   </header>
 
   <!-- Hero Section -->
-  <section class="bg-gradient-to-b from-slate-100 to-white py-20">
-    <div class="max-w-7xl mx-auto px-4 text-center">
-      <h2 class="text-5xl font-bold text-slate-900 mb-6">Curated Fine Fragrances</h2>
-      <p class="text-xl text-slate-600 mb-8 max-w-3xl mx-auto">
-        Discover extraordinary scents that tell stories. From aquatic minimalism to smoky sophistication, 
-        each fragrance is carefully selected for its artistry and character.
-      </p>
-      <button onclick="scrollToFragrances()" class="bg-slate-900 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-slate-700 transition-colors">
-        Explore Collection
-      </button>
+  <section class="lovable-section">
+    <div class="lovable-container text-center">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-6xl font-bold lovable-text-gradient mb-6 leading-tight">
+          Curated Fine Fragrances
+        </h2>
+        <p class="text-xl text-gray-600 mb-10 max-w-3xl mx-auto leading-relaxed">
+          Discover extraordinary scents that tell stories. From aquatic minimalism to smoky sophistication, 
+          each fragrance is carefully selected for its artistry and character.
+        </p>
+        <button onclick="scrollToFragrances()" class="lovable-button-primary text-lg">
+          Explore Collection
+        </button>
+      </div>
     </div>
   </section>
 
   <!-- Filters -->
-  <section class="max-w-7xl mx-auto px-4 py-8">
-    <div class="flex flex-wrap gap-4 items-center justify-center">
-      <label class="text-sm font-medium text-slate-700">Filter by:</label>
-      <select id="ratingFilter" class="px-4 py-2 border border-slate-300 rounded-lg">
-        <option value="">All Ratings</option>
-        <option value="5">⭐⭐⭐⭐⭐ (5 stars)</option>
-        <option value="4">⭐⭐⭐⭐ (4+ stars)</option>
-        <option value="3">⭐⭐⭐ (3+ stars)</option>
-      </select>
-      <select id="temperatureFilter" class="px-4 py-2 border border-slate-300 rounded-lg">
-        <option value="">All Temperatures</option>
-        <option value="Cool">Cool</option>
-        <option value="Warm">Warm</option>
-        <option value="Cold">Cold</option>
-        <option value="Neutral">Neutral</option>
-      </select>
-      <input type="text" id="searchInput" placeholder="Search fragrances..." class="px-4 py-2 border border-slate-300 rounded-lg w-64">
+  <section class="lovable-container pb-8">
+    <div class="lovable-card max-w-4xl mx-auto p-6">
+      <div class="flex flex-wrap gap-4 items-center justify-center">
+        <label class="text-sm font-medium text-gray-700">Filter by:</label>
+        <select id="ratingFilter" class="lovable-input">
+          <option value="">All Ratings</option>
+          <option value="5">⭐⭐⭐⭐⭐ (5 stars)</option>
+          <option value="4">⭐⭐⭐⭐ (4+ stars)</option>
+          <option value="3">⭐⭐⭐ (3+ stars)</option>
+        </select>
+        <select id="temperatureFilter" class="lovable-input">
+          <option value="">All Temperatures</option>
+          <option value="Cool">Cool</option>
+          <option value="Warm">Warm</option>
+          <option value="Cold">Cold</option>
+          <option value="Neutral">Neutral</option>
+        </select>
+        <input type="text" id="searchInput" placeholder="Search fragrances..." class="lovable-input w-64">
+      </div>
     </div>
   </section>
 
   <!-- Fragrances Grid -->
-  <section id="fragrances" class="max-w-7xl mx-auto px-4 py-8">
+  <section id="fragrances" class="lovable-container pb-16">
     <div id="fragranceGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       <!-- Fragrances will be loaded here by JavaScript -->
     </div>
   </section>
 
   <!-- Modal -->
-  <div id="fragranceModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+  <div id="fragranceModal" class="fixed inset-0 bg-black/20 backdrop-blur-sm hidden z-50">
     <div class="flex items-center justify-center min-h-screen p-4">
-      <div class="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="backdrop-glass rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-white/20 shadow-2xl">
         <div id="modalContent" class="p-8">
           <!-- Modal content will be inserted here -->
         </div>
@@ -80,9 +86,9 @@
   </div>
 
   <!-- Related Products Modal -->
-  <div id="relatedProductsModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+  <div id="relatedProductsModal" class="fixed inset-0 bg-black/20 backdrop-blur-sm hidden z-50">
     <div class="flex items-center justify-center min-h-screen p-4">
-      <div class="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="backdrop-glass rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto border border-white/20 shadow-2xl">
         <div id="relatedModalContent" class="p-8">
           <!-- Related products content will be inserted here -->
         </div>
@@ -91,31 +97,31 @@
   </div>
 
   <!-- Footer -->
-  <footer class="bg-slate-900 text-white py-12 mt-16">
-    <div class="max-w-7xl mx-auto px-4">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+  <footer class="bg-gradient-to-r from-gray-900 to-gray-800 text-white py-16 mt-20">
+    <div class="lovable-container">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
         <div>
-          <h3 class="text-xl font-bold mb-4">🌿 Scents Gallery</h3>
-          <p class="text-slate-300">Curating extraordinary fragrances for the discerning nose.</p>
+          <h3 class="text-2xl font-bold mb-6">🌿 Scents Gallery</h3>
+          <p class="text-gray-300 leading-relaxed">Curating extraordinary fragrances for the discerning nose.</p>
         </div>
         <div>
-          <h4 class="font-semibold mb-4">Customer Care</h4>
-          <ul class="space-y-2 text-slate-300">
-            <li><a href="#" class="hover:text-white">Shipping Info</a></li>
-            <li><a href="#" class="hover:text-white">Returns</a></li>
-            <li><a href="#" class="hover:text-white">Contact Us</a></li>
+          <h4 class="font-semibold mb-6 text-lg">Customer Care</h4>
+          <ul class="space-y-3 text-gray-300">
+            <li><a href="#" class="hover:text-white transition-colors">Shipping Info</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Returns</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Contact Us</a></li>
           </ul>
         </div>
         <div>
-          <h4 class="font-semibold mb-4">About</h4>
-          <ul class="space-y-2 text-slate-300">
-            <li><a href="#" class="hover:text-white">Our Story</a></li>
-            <li><a href="#" class="hover:text-white">Fragrance Guide</a></li>
-            <li><a href="#" class="hover:text-white">Reviews</a></li>
+          <h4 class="font-semibold mb-6 text-lg">About</h4>
+          <ul class="space-y-3 text-gray-300">
+            <li><a href="#" class="hover:text-white transition-colors">Our Story</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Fragrance Guide</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Reviews</a></li>
           </ul>
         </div>
       </div>
-      <div class="border-t border-slate-700 mt-8 pt-8 text-center text-slate-400">
+      <div class="border-t border-gray-700 mt-12 pt-8 text-center text-gray-400">
         <p>&copy; 2024 Scents Gallery. All rights reserved.</p>
       </div>
     </div>

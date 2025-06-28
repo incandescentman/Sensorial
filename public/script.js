@@ -167,7 +167,7 @@ function renderFragrances() {
 
   filteredData.forEach(fragrance => {
     const card = document.createElement('div');
-    card.className = 'bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer';
+    card.className = 'lovable-card lovable-hover-lift cursor-pointer overflow-hidden';
     card.onclick = () => openModal(fragrance);
 
     const rating = generateStars(fragrance.Rating);
@@ -175,19 +175,19 @@ function renderFragrances() {
 
     card.innerHTML = `
       <div class="p-6">
-        <h3 class="text-xl font-bold text-slate-900 mb-2">${fragrance.Name}</h3>
-        <p class="text-sm text-slate-600 mb-2">${fragrance.Brand}</p>
+        <h3 class="text-xl font-bold text-gray-900 mb-2">${fragrance.Name}</h3>
+        <p class="text-sm text-gray-600 mb-2">${fragrance.Brand}</p>
         <div class="flex items-center justify-between mb-3">
           <span class="text-sm">${rating}</span>
-          <span class="text-lg font-bold text-slate-900">$${price}</span>
+          <span class="text-lg font-bold bg-gradient-to-r from-blue-600 to-blue-700 bg-clip-text text-transparent">$${price}</span>
         </div>
-        <p class="text-sm text-slate-600 mb-4">${truncateText(fragrance.Vibe)}</p>
-        <div class="flex flex-wrap gap-1 mb-4">
+        <p class="text-sm text-gray-600 mb-4 leading-relaxed">${truncateText(fragrance.Vibe)}</p>
+        <div class="flex flex-wrap gap-2 mb-6">
           ${fragrance['Main Accords'].split(',').slice(0, 3).map(accord => 
-            `<span class="px-2 py-1 bg-slate-100 text-slate-600 text-xs rounded-full">${accord.trim()}</span>`
+            `<span class="px-3 py-1 bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 text-xs rounded-full border border-blue-200">${accord.trim()}</span>`
           ).join('')}
         </div>
-        <button class="w-full bg-slate-900 text-white py-2 rounded-lg hover:bg-slate-700 transition-colors">
+        <button class="w-full lovable-button-primary py-3">
           View Details
         </button>
       </div>
@@ -206,68 +206,68 @@ function openModal(fragrance) {
   const price = Math.floor(Math.random() * 200) + 50;
 
   content.innerHTML = `
-    <div class="flex justify-between items-start mb-6">
+    <div class="flex justify-between items-start mb-8">
       <div>
-        <h2 class="text-3xl font-bold text-slate-900 mb-2">${fragrance.Name}</h2>
-        <p class="text-lg text-slate-600 mb-2">${fragrance.Brand}</p>
-        <div class="flex items-center gap-4 mb-4">
-          <span>${rating}</span>
-          <span class="text-2xl font-bold text-slate-900">$${price}</span>
+        <h2 class="text-3xl font-bold lovable-text-gradient mb-3">${fragrance.Name}</h2>
+        <p class="text-lg text-gray-600 mb-3">${fragrance.Brand}</p>
+        <div class="flex items-center gap-6 mb-4">
+          <span class="text-lg">${rating}</span>
+          <span class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-blue-700 bg-clip-text text-transparent">$${price}</span>
         </div>
       </div>
-      <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 text-2xl">&times;</button>
+      <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 text-3xl transition-colors">&times;</button>
     </div>
 
-    <div class="space-y-6">
-      <div>
-        <h3 class="text-lg font-semibold text-slate-900 mb-2">Vibe:</h3>
-        <p class="text-slate-700">${fragrance.Vibe}</p>
+    <div class="space-y-8">
+      <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100">
+        <h3 class="text-lg font-semibold text-gray-900 mb-3">Vibe:</h3>
+        <p class="text-gray-700 leading-relaxed">${fragrance.Vibe}</p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div>
-          <h4 class="font-semibold text-slate-900 mb-2">Top Notes:</h4>
-          <div class="text-sm text-slate-600">${makeNotesClickable(fragrance['Top Notes'])}</div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white/50 rounded-xl p-4 border border-gray-200">
+          <h4 class="font-semibold text-gray-900 mb-3">Top Notes:</h4>
+          <div class="text-sm text-gray-600 leading-relaxed">${makeNotesClickable(fragrance['Top Notes'])}</div>
         </div>
-        <div>
-          <h4 class="font-semibold text-slate-900 mb-2">Heart Notes:</h4>
-          <div class="text-sm text-slate-600">${makeNotesClickable(fragrance['Heart Notes'])}</div>
+        <div class="bg-white/50 rounded-xl p-4 border border-gray-200">
+          <h4 class="font-semibold text-gray-900 mb-3">Heart Notes:</h4>
+          <div class="text-sm text-gray-600 leading-relaxed">${makeNotesClickable(fragrance['Heart Notes'])}</div>
         </div>
-        <div>
-          <h4 class="font-semibold text-slate-900 mb-2">Base Notes:</h4>
-          <div class="text-sm text-slate-600">${makeNotesClickable(fragrance['Base Notes'])}</div>
+        <div class="bg-white/50 rounded-xl p-4 border border-gray-200">
+          <h4 class="font-semibold text-gray-900 mb-3">Base Notes:</h4>
+          <div class="text-sm text-gray-600 leading-relaxed">${makeNotesClickable(fragrance['Base Notes'])}</div>
         </div>
       </div>
 
       <div>
-        <h4 class="font-semibold text-slate-900 mb-2">Main Accords:</h4>
-        <div class="flex flex-wrap gap-2">
+        <h4 class="font-semibold text-gray-900 mb-4">Main Accords:</h4>
+        <div class="flex flex-wrap gap-3">
           ${fragrance['Main Accords'].split(',').map(accord => 
-            `<span class="px-3 py-1 bg-slate-100 text-slate-600 text-sm rounded-full">${accord.trim()}</span>`
+            `<span class="px-4 py-2 bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 text-sm rounded-xl border border-blue-200 font-medium">${accord.trim()}</span>`
           ).join('')}
         </div>
       </div>
 
-      <div>
-        <h4 class="font-semibold text-slate-900 mb-2">Color Association:</h4>
-        <p class="text-slate-700">${fragrance['Color Association']}</p>
+      <div class="bg-gray-50 rounded-xl p-6 border border-gray-200">
+        <h4 class="font-semibold text-gray-900 mb-3">Color Association:</h4>
+        <p class="text-gray-700 leading-relaxed">${fragrance['Color Association']}</p>
       </div>
 
       <div>
-        <h4 class="font-semibold text-slate-900 mb-2">What It Smells Like:</h4>
-        <p class="text-slate-700">${fragrance['Smells Like...']}</p>
+        <h4 class="font-semibold text-gray-900 mb-3">What It Smells Like:</h4>
+        <p class="text-gray-700 leading-relaxed">${fragrance['Smells Like...']}</p>
       </div>
 
       <div>
-        <h4 class="font-semibold text-slate-900 mb-2">Memory & Association:</h4>
-        <p class="text-slate-700">${fragrance['Memory or Association']}</p>
+        <h4 class="font-semibold text-gray-900 mb-3">Memory & Association:</h4>
+        <p class="text-gray-700 leading-relaxed">${fragrance['Memory or Association']}</p>
       </div>
 
-      <div class="flex gap-4 pt-6 border-t border-slate-200">
-        <button class="flex-1 bg-slate-900 text-white py-3 rounded-lg hover:bg-slate-700 transition-colors font-semibold">
+      <div class="flex gap-4 pt-8 border-t border-gray-200">
+        <button class="flex-1 lovable-button-primary py-4 text-lg">
           Add to Cart - $${price}
         </button>
-        <button class="px-6 py-3 border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors">
+        <button class="lovable-button-secondary px-8">
           ♡ Save
         </button>
       </div>
